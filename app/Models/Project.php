@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory;
+    public function type(){
+        return $this->belongsTo(Type::class);
+    }
 
     protected $fillable = [
         'title',
         'project_image',
         'description',
-        'end_date'
+        'end_date',
+        'type_id'
     ];
 }

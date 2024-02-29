@@ -58,7 +58,7 @@ class ProjectController extends Controller
         
         $new_project->save();
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -81,8 +81,15 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        $project = Project::findOrFail($id);
-        return view('edit', compact('project'));
+        $error_message = '';
+
+        if (!empty($request->all())) {
+            $messages = $request->all();
+            $error_message = $messages['error_message'];
+        }
+
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types', 'error_message'));
     }
 
     /**
@@ -96,8 +103,7 @@ class ProjectController extends Controller
     {
         $data = $request->all();
 
-        $project->update($data);
-
+        
         if ($request->hasFile('project_image')) {
             if ($project->project_image != null) {
                 Storage::disk('public')->delete($project->project_image);
@@ -105,10 +111,11 @@ class ProjectController extends Controller
             $img_path = Storage::disk('public')->put('projects_image', $data['project_image']);
             $data['project_image'] = $img_path;
         }
+        
+        $project->update($data);
+        
 
-        $project->save();
-
-        return redirect()->route('admin.projects.show', $project->id);
+        return redirect()->route('show', $project->id);
     }
 
     /**
@@ -119,8 +126,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->cover_image != null) {
+            Storage::disk('public')->delete($project->cover_image);
+        }
+
         $project->delete();
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('dashboard');
     }
 }

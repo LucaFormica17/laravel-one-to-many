@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\DashboardController as DashboardController;
 use App\Http\Controllers\Admin\ProjectController as ProjectController;
-
+use App\Http\Controllers\Admin\TypeController as TypeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,7 +30,7 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function(){
         Route::resource('/projects', ProjectController::class);
-        
+        Route::resource('/types', TypeController::class);
     });
 
 Route::middleware('auth')->group(function () {
