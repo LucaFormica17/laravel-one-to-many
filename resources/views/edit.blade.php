@@ -34,6 +34,17 @@
                                 {{$message}}
                             </div>
                             @enderror
+
+                            <label for="type_id" class="control-label text-white">Selezione la tipologia</label>
+                        <select name="type_id" id="type_id" class="form-select" @error('type_id') is-invalid @enderror">
+                            <option value="">Seleziona la tipologia</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}" @selected($type->id == old('type_id', $project->type ? $project->type_it : ''))>{{ $type->nome }}
+                                </option>
+                            @endforeach
+                        </select>
+
+
                             <label for="end_date">Data di consena</label>
                             <input type="date" name="end_date" id="end_date" class="form-control mb-3">
                             @error('end_date')

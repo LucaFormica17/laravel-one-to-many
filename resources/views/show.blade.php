@@ -5,6 +5,7 @@
     <img src="{{asset('/storage/'.$project->project_image)}}" alt="{{$project->title}}" class="img-fluid">
     <h3 class="text-center mt-5">Descrizione:</h3>
     <p class="text-center">{{$project->description}}</p>
+    <p class="text-center">Categoria: {{$project->type_id ? $project->type->nome : 'Nessuna categoria'}}</p>
     <p class="text-end me-5 mt-4">Data di consegna: {{$project->end_date}}</p>
 
     <a href="{{route('admin.projects.edit', $project->id)}}" class="ms-5">

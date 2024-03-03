@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Type;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('create');
+
+        $types = Type::all();
+        return view('create', compact('types'));
     }
 
     /**
@@ -79,7 +82,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project, Request $request)
     {
         $error_message = '';
 
@@ -89,7 +92,7 @@ class ProjectController extends Controller
         }
 
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types', 'error_message'));
+        return view('edit', compact('project', 'types', 'error_message'));
     }
 
     /**
@@ -115,7 +118,7 @@ class ProjectController extends Controller
         $project->update($data);
         
 
-        return redirect()->route('show', $project->id);
+        return redirect()->route('admin.projects.show', $project->id);
     }
 
     /**
